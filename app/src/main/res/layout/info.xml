@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/primal">
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/brown"
+        android:fontFamily="serif-monospace"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:text="Username"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints,RtlSymmetry" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/line_layout_1"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_name"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/point_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="serif-monospace"
+            android:lineSpacingExtra="34sp"
+            android:text="1000"
+            android:textAlignment="center"
+            android:textColor="@color/brown"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.38"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/point_suffix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="serif-monospace"
+            android:lineSpacingExtra="34sp"
+            android:text="@string/point_suffix"
+            android:textAlignment="center"
+            android:textColor="@color/brown"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/point_display"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="MissingConstraints" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/line_layout_2"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line_layout_1"
+        tools:ignore="MissingConstraints,TextSizeCheck">
+
+        <TextView
+            android:id="@+id/criminal_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif-monospace"
+            android:lineSpacingExtra="34sp"
+            android:text="@string/violation_history"
+            android:textAlignment="center"
+            android:textColor="@color/brown"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <View
+            android:id="@+id/underline"
+            android:layout_width="350dp"
+            android:layout_height="2dp"
+            android:layout_weight="1"
+            android:background="@color/brown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/criminal_history"
+            tools:ignore="MissingConstraints" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/infoLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="429dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line_layout_2"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="true"
+            android:fillViewport="true"
+            android:isScrollContainer="false"
+            android:scrollbarStyle="insideOverlay"
+            tools:ignore="UselessParent">
+
+            <LinearLayout
+                android:id="@+id/LinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                tools:ignore="ExtraText">
+
+                <TextView
+                    android:id="@+id/crime_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:fontFamily="serif-monospace"
+                    android:maxWidth="300dp"
+                    android:text="4/01 ひき逃げ 10点"
+                    android:textAlignment="center"
+                    android:textColor="@color/brown"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/crime_line_1"
+                    android:layout_width="300dp"
+                    android:layout_height="1dp"
+                    android:background="@color/brown"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/crime_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:fontFamily="serif-monospace"
+                    android:maxWidth="300dp"
+                    android:text="12/31 大型自動車等無資格運転(酒気帯び点数0.25以上) 20点"
+                    android:textAlignment="center"
+                    android:textColor="@color/brown"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/crime_line_2"
+                    android:layout_width="300dp"
+                    android:layout_height="1dp"
+                    android:background="@color/brown"
+                    tools:ignore="MissingConstraints" />
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/players_layout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:paddingLeft="20dp"-->
+    <!--        android:paddingTop="20dp"-->
+    <!--        android:paddingRight="20dp"-->
+    <!--        android:paddingBottom="20dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintVertical_bias="1.0"-->
+    <!--        tools:context=".MainActivity">-->
+
+    <!--        <ScrollView-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:clipToPadding="true"-->
+    <!--            android:fillViewport="true"-->
+    <!--            android:scrollbarStyle="insideOverlay"-->
+    <!--            tools:ignore="UselessParent">-->
+
+    <!--            <TableLayout-->
+    <!--                android:id="@+id/table"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:padding="10dp"-->
+    <!--                android:stretchColumns="*">-->
+
+    <!--                &lt;!&ndash;                <TableRow&ndash;&gt;-->
+    <!--                &lt;!&ndash;                    android:id="@+id/tableRow_label"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                    android:layout_height="match_parent"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                    android:background="@color/brown"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                    android:gravity="center_vertical">&ndash;&gt;-->
+
+    <!--                &lt;!&ndash;                    <TextView&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        android:id="@+id/col_day"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        android:background="@drawable/shape_outer_frame"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        android:padding="10dp"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        android:text="@string/col_day" />&ndash;&gt;-->
+
+    <!--                &lt;!&ndash;                    <TextView&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        android:id="@+id/col_violation"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        android:background="@drawable/shape_outer_frame"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        android:padding="10dp"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        android:text="@string/col_violation" />&ndash;&gt;-->
+
+    <!--                &lt;!&ndash;                    <TextView&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        android:id="@+id/col_point"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        android:background="@drawable/shape_outer_frame"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        android:padding="10dp"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        android:text="@string/col_point" />&ndash;&gt;-->
+
+    <!--                &lt;!&ndash;                </TableRow>&ndash;&gt;-->
+
+    <!--                <TableRow-->
+    <!--                    android:id="@+id/tableRow_1"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent">-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/day_row_1"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 1_day" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/violation_row_1"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 1_violation" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/point_row_1"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 1_point" />-->
+
+    <!--                </TableRow>-->
+
+    <!--                <TableRow-->
+    <!--                    android:id="@+id/tableRow_2"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent">-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/day_row_2"-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 2_day" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/violation_row_2"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 2_violation" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/point_row_2"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 2_point" />-->
+
+
+    <!--                </TableRow>-->
+
+    <!--                <TableRow-->
+    <!--                    android:id="@+id/tableRow_3"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent">-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/day_row_3"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 3_day" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/violation_row_3"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 3_violation" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/point_row_3"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 3_point" />-->
+
+
+    <!--                </TableRow>-->
+
+    <!--                <TableRow-->
+    <!--                    android:id="@+id/tableRow_4"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent">-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/day_row_4"-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="match_parent"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 4_day" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/violation_row_4"-->
+    <!--                        android:hyphenationFrequency="normal"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 4_violation" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/point_row_4"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 4_point" />-->
+
+
+    <!--                </TableRow>-->
+
+    <!--                <TableRow-->
+    <!--                    android:id="@+id/tableRow_5"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent">-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/day_row_5"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 5_day" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/violation_row_5"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 5_violation" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/point_row_5"-->
+    <!--                        android:padding="10dp"-->
+    <!--                        android:text="Value 5_point" />-->
+
+    <!--                </TableRow>-->
+    <!--            </TableLayout>-->
+    <!--        </ScrollView>-->
+    <!--    </LinearLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>
