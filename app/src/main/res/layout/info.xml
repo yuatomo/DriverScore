@@ -156,44 +156,49 @@
                 tools:ignore="ExtraText">
 
                 <TextView
-                    android:id="@+id/crime_1"
+                    android:id="@+id/day_row"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:fontFamily="serif-monospace"
                     android:maxWidth="300dp"
-                    android:text="4/01 ひき逃げ 10点"
+                    android:text="なし"
                     android:textAlignment="center"
                     android:textColor="@color/brown"
                     android:textSize="20sp"
                     android:textStyle="bold" />
-
-                <View
-                    android:id="@+id/crime_line_1"
-                    android:layout_width="300dp"
-                    android:layout_height="1dp"
-                    android:background="@color/brown"
-                    tools:ignore="MissingConstraints" />
 
                 <TextView
-                    android:id="@+id/crime_2"
+                    android:id="@+id/violation_row"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:fontFamily="serif-monospace"
                     android:maxWidth="300dp"
-                    android:text="12/31 大型自動車等無資格運転(酒気帯び点数0.25以上) 20点"
                     android:textAlignment="center"
                     android:textColor="@color/brown"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <View
-                    android:id="@+id/crime_line_2"
-                    android:layout_width="300dp"
-                    android:layout_height="1dp"
-                    android:background="@color/brown"
-                    tools:ignore="MissingConstraints" />
+                <TextView
+                    android:id="@+id/point_row"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:fontFamily="serif-monospace"
+                    android:maxWidth="300dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/brown"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+<!--                <View-->
+<!--                    android:id="@+id/crime_line_1"-->
+<!--                    android:layout_width="300dp"-->
+<!--                    android:layout_height="1dp"-->
+<!--                    android:background="@color/brown"-->
+<!--                    tools:ignore="MissingConstraints" />-->
+
 
             </LinearLayout>
         </ScrollView>

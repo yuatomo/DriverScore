@@ -1,8 +1,13 @@
 package com.example.driverscore;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +20,7 @@ import java.net.URL;
 
 public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
     private MainActivity mainActivity;
-    String getUrl = "http://192.168.11.11/webapi.php/index.php";// "http://54.146.118.1/index.php"; // WebAPIのURL
+    String getUrl = "http://10.30.4.98/webapi.php/index.php";// "http://54.146.118.1/index.php"; // WebAPIのURL
 
     public HttpAsyncLoader(MainActivity activity, String parameter) {
         // 呼び出し元のアクティビティ
@@ -77,38 +82,86 @@ public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
         try {
             JsonNode jsonNode = objectMapper.readTree(result);
             if (jsonNode != null && getUrl.contains("SELECT u.name")) {
-                TextView textView2 = (TextView) mainActivity.findViewById(R.id.textView2);
-                textView2.setText(jsonNode.get(0).get("name").asText());
-                TextView point_display2 = (TextView) mainActivity.findViewById(R.id.point_display2);
+                TextView user_name = (TextView) mainActivity.findViewById(R.id.user_name);
+                user_name.setText(jsonNode.get(0).get("name").asText());
+                TextView point_display = (TextView) mainActivity.findViewById(R.id.point_display);
                 if(jsonNode.get(0).get("totalPoints").asText().equals("null")) {
-                    point_display2.setText("0 POINT");
+                    point_display.setText("0");
                 } else {
-                    point_display2.setText(jsonNode.get(0).get("totalPoints").asText() + " POINT");
+                    point_display.setText(jsonNode.get(0).get("totalPoints").asText());
                 }
             }
-            if (jsonNode != null && getUrl.contains("SELECT violationtime")) {
-                TextView[] day_row = new TextView[5];
-                day_row[0] = (TextView) mainActivity.findViewById(R.id.day_row_1);
-                day_row[1] = (TextView) mainActivity.findViewById(R.id.day_row_2);
-                day_row[2] = (TextView) mainActivity.findViewById(R.id.day_row_3);
-                day_row[3] = (TextView) mainActivity.findViewById(R.id.day_row_4);
-                day_row[4] = (TextView) mainActivity.findViewById(R.id.day_row_5);
-                TextView[] violation_row = new TextView[5];
-                violation_row[0] = (TextView) mainActivity.findViewById(R.id.violation_row_1);
-                violation_row[1] = (TextView) mainActivity.findViewById(R.id.violation_row_2);
-                violation_row[2] = (TextView) mainActivity.findViewById(R.id.violation_row_3);
-                violation_row[3] = (TextView) mainActivity.findViewById(R.id.violation_row_4);
-                violation_row[4] = (TextView) mainActivity.findViewById(R.id.violation_row_5);
-                TextView[] point_row = new TextView[5];
-                point_row[0] = (TextView) mainActivity.findViewById(R.id.point_row_1);
-                point_row[1] = (TextView) mainActivity.findViewById(R.id.point_row_2);
-                point_row[2] = (TextView) mainActivity.findViewById(R.id.point_row_3);
-                point_row[3] = (TextView) mainActivity.findViewById(R.id.point_row_4);
-                point_row[4] = (TextView) mainActivity.findViewById(R.id.point_row_5);
+            if (jsonNode != null && getUrl.contains("SELECT violation")) {
                 for(int i = 0; i < jsonNode.size(); i++) {
-                    day_row[i].setText(jsonNode.get(i).get("violationtime").asText());
-                    violation_row[i].setText(jsonNode.get(i).get("charge").asText());
-                    point_row[i].setText(jsonNode.get(i).get("point").asText());
+                    LinearLayout parentLayout = mainActivity.findViewById(R.id.LinearLayout);
+                    TextView day_row = mainActivity.findViewById(R.id.day_row);
+                    if (i != 0) {
+                        TextView textView = new TextView(this.mainActivity);
+                        textView.setId(View.generateViewId()); // ユニークなIDを生成
+                        textView.setText(jsonNode.get(i).get("violationtime").asText());
+                        textView.setLayoutParams(day_row.getLayoutParams());
+                        textView.setPadding(day_row.getPaddingLeft(), day_row.getPaddingTop(),
+                                day_row.getPaddingRight(), day_row.getPaddingBottom());
+                        textView.setTypeface(day_row.getTypeface());
+                        textView.setMaxWidth(825);
+                        textView.setTextSize(20);
+                        textView.setTextColor(day_row.getTextColors());
+                        textView.setTextAlignment(day_row.getTextAlignment());
+                        textView.setTypeface(day_row.getTypeface(), day_row.getTypeface().getStyle());
+
+                        TextView textView2 = new TextView(this.mainActivity);
+                        textView2.setId(View.generateViewId()); // ユニークなIDを生成
+                        textView2.setText(jsonNode.get(i).get("charge").asText());
+                        textView2.setLayoutParams(day_row.getLayoutParams());
+                        textView2.setPadding(day_row.getPaddingLeft(), day_row.getPaddingTop(),
+                                day_row.getPaddingRight(), day_row.getPaddingBottom());
+                        textView2.setTypeface(day_row.getTypeface());
+                        textView2.setMaxWidth(825);
+                        textView2.setTextSize(20);
+                        textView2.setTextColor(day_row.getTextColors());
+                        textView2.setTextAlignment(day_row.getTextAlignment());
+                        textView2.setTypeface(day_row.getTypeface(), day_row.getTypeface().getStyle());
+
+                        TextView textView3 = new TextView(this.mainActivity);
+                        textView3.setId(View.generateViewId()); // ユニークなIDを生成
+                        textView3.setText(jsonNode.get(i).get("point").asText() + "点");
+                        textView3.setLayoutParams(day_row.getLayoutParams());
+                        textView3.setPadding(day_row.getPaddingLeft(), day_row.getPaddingTop(),
+                                day_row.getPaddingRight(), day_row.getPaddingBottom());
+                        textView3.setTypeface(day_row.getTypeface());
+                        textView3.setMaxWidth(825);
+                        textView3.setTextSize(20);
+                        textView3.setTextColor(day_row.getTextColors());
+                        textView3.setTextAlignment(day_row.getTextAlignment());
+                        textView3.setTypeface(day_row.getTypeface(), day_row.getTypeface().getStyle());
+
+                        // 生成したTextViewを追加
+                        parentLayout.addView(textView);
+                        parentLayout.addView(textView2);
+                        parentLayout.addView(textView3);
+
+                        View lineView = new View(this.mainActivity);
+                        lineView.setId(View.generateViewId());
+                        lineView.setLayoutParams(new ConstraintLayout.LayoutParams(825, 3));
+                        lineView.setBackgroundColor(Color.parseColor("#33241d"));
+                        lineView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
+                        parentLayout.addView(lineView);
+                    } else {
+                        TextView violation_row = mainActivity.findViewById(R.id.violation_row);
+                        TextView point_row = mainActivity.findViewById(R.id.point_row);
+                        day_row.setText(jsonNode.get(i).get("violationtime").asText());
+                        violation_row.setText(jsonNode.get(i).get("charge").asText());
+                        point_row.setText(jsonNode.get(i).get("point").asText() + "点");
+
+                        View lineView = new View(this.mainActivity);
+                        lineView.setId(View.generateViewId());
+                        lineView.setLayoutParams(new ConstraintLayout.LayoutParams(825, 3));
+                        lineView.setBackgroundColor(Color.parseColor("#33241d"));
+                        lineView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
+                        parentLayout.addView(lineView);
+                    }
                 }
             }
         } catch (Exception e) {
