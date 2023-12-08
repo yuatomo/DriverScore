@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/primal">
 
     <TextView
@@ -44,7 +44,7 @@
             android:layout_marginBottom="20dp"
             android:fontFamily="serif-monospace"
             android:lineSpacingExtra="34sp"
-            android:text="1000"
+            android:text="0"
             android:textAlignment="center"
             android:textColor="@color/brown"
             android:textSize="48sp"
@@ -127,9 +127,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/infoLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="429dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -139,12 +138,17 @@
 
         <ScrollView
             android:id="@+id/scrollView"
+            style="@android:style/Widget.Holo.ScrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:clipToPadding="true"
-            android:fillViewport="true"
-            android:isScrollContainer="false"
-            android:scrollbarStyle="insideOverlay"
+            android:fillViewport="false"
+            android:isScrollContainer="true"
+            android:scrollbarStyle="outsideOverlay"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="UselessParent">
 
             <LinearLayout
@@ -162,7 +166,7 @@
                     android:layout_margin="10dp"
                     android:fontFamily="serif-monospace"
                     android:maxWidth="300dp"
-                    android:text="なし"
+                    android:text="@string/not_data"
                     android:textAlignment="center"
                     android:textColor="@color/brown"
                     android:textSize="20sp"
@@ -192,12 +196,12 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-<!--                <View-->
-<!--                    android:id="@+id/crime_line_1"-->
-<!--                    android:layout_width="300dp"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:background="@color/brown"-->
-<!--                    tools:ignore="MissingConstraints" />-->
+                <!--                <View-->
+                <!--                    android:id="@+id/crime_line_1"-->
+                <!--                    android:layout_width="300dp"-->
+                <!--                    android:layout_height="1dp"-->
+                <!--                    android:background="@color/brown"-->
+                <!--                    tools:ignore="MissingConstraints" />-->
 
 
             </LinearLayout>

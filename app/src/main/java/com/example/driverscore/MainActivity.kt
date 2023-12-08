@@ -15,7 +15,7 @@ import java.util.TimeZone
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.info)
+        setContentView(R.layout.activity_main)
 
         lifecycleScope.launch {
             // 暗証番号１のみ

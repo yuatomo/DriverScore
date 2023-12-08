@@ -9,4 +9,6 @@
     <string name="col_violation">違反内容</string>
     <string name="col_point">点数</string>
     <string name="violation_history">過去履歴</string>
+    <string name="not_data">なし</string>
+    <string name="password_placeholder">4桁の暗証番号</string>
 </resources>
