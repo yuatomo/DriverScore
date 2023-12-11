@@ -1,10 +1,17 @@
 package com.example.driverscore
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import io.github.takusan23.jdcardreadercore.JDCardReaderCore
+import io.github.takusan23.jdcardreadercore.JDCardReaderException
 import io.github.takusan23.jdcardreadercore.data.JDCardData
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -17,15 +24,54 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        lifecycleScope.launch {
-            // 暗証番号１のみ
-//            val cardData = JDCardReaderCore.startGetCardData(this@MainActivity, "0000")
-//            val cardNumber = cardData.jdCardDF1EF01Data.cardNumber
-//            registerData(cardData)
-            val cardNumber = "258703660970"
-            viewViolationLog(cardNumber)
-        }
+        var password = ""
+        val errorText = findViewById<TextView>(R.id.error_text)
+        val editText = findViewById<EditText>(R.id.password)
 
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+                // 変更前のテキストがあればここで処理
+            }
+
+            override fun onTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                // テキストが変更された瞬間にここで処理
+                password = charSequence.toString()
+                // ここで取得したテキストを使って必要な処理を行います
+            }
+
+            override fun afterTextChanged(editable: Editable?) {
+                // 変更後のテキストが確定した瞬間にここで処理
+                if (password.length == 4) {
+                    errorText.text = ""
+                    lifecycleScope.launch {
+                        // 暗証番号１のみ
+                        try {
+                            val cardData =
+                                JDCardReaderCore.startGetCardData(this@MainActivity, password)
+                            val cardNumber = cardData.jdCardDF1EF01Data.cardNumber
+                            registerData(cardData)
+                            val intent = Intent(this@MainActivity, InfoActivity::class.java)
+                            intent.putExtra("cardNumber", cardNumber)
+                            startActivity(intent)
+                        } catch (e: JDCardReaderException) {
+                            errorText.text = "暗証番号が違います\n3回間違えるとロックされます"
+                        }
+                    }
+                } else {
+                    errorText.text = "暗証番号は4桁で入力してください"
+                }
+            }
+        })
     }
 
     fun registerData(cardData :JDCardData) {
@@ -38,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         val endTimeAt = convertJapaneseEraToWesternDate(cardData.jdCardDF1EF01Data.endDate)
         val color = cardData.jdCardDF1EF01Data.cardColor
         val builder = Uri.Builder()
-        val parameter = "?sql=INSERT IGNORE INTO user VALUES ($cardNumber, '$name', '$kana', '$location', '$birthday', '$registeredAt', '$endTimeAt', '$color', 0)"
+        val parameter = "?sql=INSERT IGNORE INTO user VALUES ($cardNumber, '$name', '$kana', '$location', '$birthday', '$registeredAt', '$endTimeAt', '$color')"
         val task = HttpAsyncLoader(this@MainActivity, parameter)
         task.execute(builder)
     }
@@ -60,18 +106,5 @@ class MainActivity : AppCompatActivity() {
 
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN)
         return sdf.format(japaneseCalendar.time)
-    }
-
-    fun viewViolationLog(cardNumber :String) {
-        val builder = Uri.Builder()
-        val parameter =
-            "?sql=SELECT u.name, SUM(c.point) AS totalPoints FROM user u LEFT JOIN history h ON u.cardNumber = h.cardNumber LEFT JOIN charge c ON h.chargeId = c.chargeId WHERE u.cardNumber = '$cardNumber' GROUP BY u.name"
-        val parameter2 =
-            "?sql=SELECT violationtime, charge, point FROM charge c LEFT JOIN history h ON c.chargeId = h.chargeId WHERE h.cardNumber = '$cardNumber' ORDER BY violationtime DESC"
-        // Asyncタスククラスのインスタンスを作成し、実行する
-        val task = HttpAsyncLoader(this@MainActivity, parameter)
-        task.execute(builder)
-        val task2 = HttpAsyncLoader(this@MainActivity, parameter2)
-        task2.execute(builder)
     }
 }

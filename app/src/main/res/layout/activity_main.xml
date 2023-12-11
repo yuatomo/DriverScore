@@ -74,6 +74,7 @@
             android:layout_height="70dp"
             android:ems="4"
             android:hint="@string/password_placeholder"
+            android:maxLength="4"
             android:importantForAutofill="no"
             android:inputType="number|numberPassword"
             android:textAlignment="center"
@@ -99,6 +100,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password"
             tools:text="エラーテキスト" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

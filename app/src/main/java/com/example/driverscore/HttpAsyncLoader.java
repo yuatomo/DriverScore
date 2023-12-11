@@ -20,11 +20,17 @@ import java.net.URL;
 
 public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
     private MainActivity mainActivity;
+    private InfoActivity infoActivity;
     String getUrl = "http://10.30.4.98/webapi.php/index.php";// "http://54.146.118.1/index.php"; // WebAPIのURL
 
     public HttpAsyncLoader(MainActivity activity, String parameter) {
         // 呼び出し元のアクティビティ
         this.mainActivity = activity;
+        this.getUrl += parameter;
+    }
+    public HttpAsyncLoader(InfoActivity activity, String parameter) {
+        // 呼び出し元のアクティビティ
+        this.infoActivity = activity;
         this.getUrl += parameter;
     }
 
@@ -82,9 +88,9 @@ public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
         try {
             JsonNode jsonNode = objectMapper.readTree(result);
             if (jsonNode != null && getUrl.contains("SELECT u.name")) {
-                TextView user_name = (TextView) mainActivity.findViewById(R.id.user_name);
+                TextView user_name = infoActivity.findViewById(R.id.user_name);
                 user_name.setText(jsonNode.get(0).get("name").asText());
-                TextView point_display = (TextView) mainActivity.findViewById(R.id.point_display);
+                TextView point_display = infoActivity.findViewById(R.id.point_display);
                 if(jsonNode.get(0).get("totalPoints").asText().equals("null")) {
                     point_display.setText("0");
                 } else {
@@ -93,10 +99,10 @@ public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
             }
             if (jsonNode != null && getUrl.contains("SELECT violation")) {
                 for(int i = 0; i < jsonNode.size(); i++) {
-                    LinearLayout parentLayout = mainActivity.findViewById(R.id.LinearLayout);
-                    TextView day_row = mainActivity.findViewById(R.id.day_row);
+                    LinearLayout parentLayout = infoActivity.findViewById(R.id.LinearLayout);
+                    TextView day_row = infoActivity.findViewById(R.id.day_row);
                     if (i != 0) {
-                        TextView textView = new TextView(this.mainActivity);
+                        TextView textView = new TextView(this.infoActivity);
                         textView.setId(View.generateViewId()); // ユニークなIDを生成
                         textView.setText(jsonNode.get(i).get("violationtime").asText());
                         textView.setLayoutParams(day_row.getLayoutParams());
@@ -109,7 +115,7 @@ public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
                         textView.setTextAlignment(day_row.getTextAlignment());
                         textView.setTypeface(day_row.getTypeface(), day_row.getTypeface().getStyle());
 
-                        TextView textView2 = new TextView(this.mainActivity);
+                        TextView textView2 = new TextView(this.infoActivity);
                         textView2.setId(View.generateViewId()); // ユニークなIDを生成
                         textView2.setText(jsonNode.get(i).get("charge").asText());
                         textView2.setLayoutParams(day_row.getLayoutParams());
@@ -122,7 +128,7 @@ public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
                         textView2.setTextAlignment(day_row.getTextAlignment());
                         textView2.setTypeface(day_row.getTypeface(), day_row.getTypeface().getStyle());
 
-                        TextView textView3 = new TextView(this.mainActivity);
+                        TextView textView3 = new TextView(this.infoActivity);
                         textView3.setId(View.generateViewId()); // ユニークなIDを生成
                         textView3.setText(jsonNode.get(i).get("point").asText() + "点");
                         textView3.setLayoutParams(day_row.getLayoutParams());
@@ -140,24 +146,24 @@ public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
                         parentLayout.addView(textView2);
                         parentLayout.addView(textView3);
 
-                        View lineView = new View(this.mainActivity);
+                        View lineView = new View(this.infoActivity);
                         lineView.setId(View.generateViewId());
                         lineView.setLayoutParams(new ConstraintLayout.LayoutParams(825, 3));
-                        lineView.setBackgroundColor(Color.parseColor("#33241d"));
+                        lineView.setBackgroundColor(Color.parseColor("#51413E"));
                         lineView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
 
                         parentLayout.addView(lineView);
                     } else {
-                        TextView violation_row = mainActivity.findViewById(R.id.violation_row);
-                        TextView point_row = mainActivity.findViewById(R.id.point_row);
+                        TextView violation_row = infoActivity.findViewById(R.id.violation_row);
+                        TextView point_row = infoActivity.findViewById(R.id.point_row);
                         day_row.setText(jsonNode.get(i).get("violationtime").asText());
                         violation_row.setText(jsonNode.get(i).get("charge").asText());
                         point_row.setText(jsonNode.get(i).get("point").asText() + "点");
 
-                        View lineView = new View(this.mainActivity);
+                        View lineView = new View(this.infoActivity);
                         lineView.setId(View.generateViewId());
                         lineView.setLayoutParams(new ConstraintLayout.LayoutParams(825, 3));
-                        lineView.setBackgroundColor(Color.parseColor("#33241d"));
+                        lineView.setBackgroundColor(Color.parseColor("#51413E"));
                         lineView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
 
                         parentLayout.addView(lineView);
