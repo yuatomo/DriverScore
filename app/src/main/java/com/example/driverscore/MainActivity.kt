@@ -97,10 +97,10 @@ class MainActivity : AppCompatActivity() {
         val japaneseCalendar = GregorianCalendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"), Locale.JAPAN)
 
         when (japaneseEra) {
-            "大正" -> japaneseCalendar.set(1912 + year, month - 1, day)
-            "昭和" -> japaneseCalendar.set(1926 + year, month - 1, day)
-            "平成" -> japaneseCalendar.set(1989 + year, month - 1, day)
-            "令和" -> japaneseCalendar.set(2019 + year, month - 1, day)
+            "大正" -> japaneseCalendar.set(1911 + year, month - 1, day)
+            "昭和" -> japaneseCalendar.set(1925 + year, month - 1, day)
+            "平成" -> japaneseCalendar.set(1988 + year, month - 1, day)
+            "令和" -> japaneseCalendar.set(2018 + year, month - 1, day)
             else -> throw IllegalArgumentException("Unsupported Japanese era: $japaneseEra")
         }
 
