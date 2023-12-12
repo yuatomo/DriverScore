@@ -22,7 +22,7 @@ import java.util.TimeZone
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.test)
+        setContentView(R.layout.activity_main)
 
         var password = ""
         val errorText = findViewById<TextView>(R.id.error_text)

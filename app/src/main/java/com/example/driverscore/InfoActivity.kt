@@ -2,6 +2,7 @@ package com.example.driverscore
 
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
 class InfoActivity : AppCompatActivity() {
@@ -11,6 +12,9 @@ class InfoActivity : AppCompatActivity() {
 
         val cardNumber = intent.getStringExtra("cardNumber").toString()
         viewViolationLog(cardNumber)
+
+        val backButton = findViewById<Button>(R.id.back_button)
+        backButton.setOnClickListener { finish() }
     }
 
     fun viewViolationLog(cardNumber :String) {
