@@ -22,7 +22,7 @@ class InfoActivity : AppCompatActivity() {
         val parameter =
             "?sql=SELECT u.name, SUM(c.point) AS totalPoints FROM user u LEFT JOIN history h ON u.cardNumber = h.cardNumber LEFT JOIN charge c ON h.chargeId = c.chargeId WHERE u.cardNumber = '$cardNumber' GROUP BY u.name"
         val parameter2 =
-            "?sql=SELECT violationtime, charge, point FROM charge c LEFT JOIN history h ON c.chargeId = h.chargeId WHERE h.cardNumber = '$cardNumber' ORDER BY violationtime DESC"
+            "?sql=SELECT violationDate, charge, point FROM charge c LEFT JOIN history h ON c.chargeId = h.chargeId WHERE h.cardNumber = '$cardNumber' ORDER BY violationDate DESC"
         // Asyncタスククラスのインスタンスを作成し、実行する
         val task = HttpAsyncLoader(this@InfoActivity, parameter)
         task.execute(builder)

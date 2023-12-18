@@ -1,8 +1,13 @@
 package com.example.driverscore;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,11 +22,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
     private MainActivity mainActivity;
     private InfoActivity infoActivity;
-    String getUrl = "http://10.30.4.98/webapi.php/index.php";// "http://54.146.118.1/index.php"; // WebAPIのURL
+    private AlarmReceiver alarmReceiver;
+    String getUrl = "http://54.146.118.1/index.php";// "http://10.30.4.98/webapi.php/index.php"; // WebAPIのURL
 
     public HttpAsyncLoader(MainActivity activity, String parameter) {
         // 呼び出し元のアクティビティ
@@ -33,10 +43,14 @@ public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
         this.infoActivity = activity;
         this.getUrl += parameter;
     }
+    public HttpAsyncLoader(AlarmReceiver activity, String parameter) {
+        // 呼び出し元のアクティビティ
+        this.alarmReceiver = activity;
+        this.getUrl += parameter;
+    }
 
     @Override
     protected String doInBackground(Uri.Builder... builder) {
-
         String text = null;
         try {
             URL url = new URL(getUrl);
@@ -97,14 +111,14 @@ public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
                     point_display.setText(jsonNode.get(0).get("totalPoints").asText());
                 }
             }
-            if (jsonNode != null && getUrl.contains("SELECT violation")) {
+            if (jsonNode != null && getUrl.contains("SELECT violationDate")) {
                 for(int i = 0; i < jsonNode.size(); i++) {
                     LinearLayout parentLayout = infoActivity.findViewById(R.id.LinearLayout);
                     TextView day_row = infoActivity.findViewById(R.id.day_row);
                     if (i != 0) {
                         TextView textView = new TextView(this.infoActivity);
                         textView.setId(View.generateViewId()); // ユニークなIDを生成
-                        textView.setText(jsonNode.get(i).get("violationtime").asText());
+                        textView.setText(jsonNode.get(i).get("violationDate").asText());
                         textView.setLayoutParams(day_row.getLayoutParams());
                         textView.setPadding(day_row.getPaddingLeft(), day_row.getPaddingTop(),
                                 day_row.getPaddingRight(), day_row.getPaddingBottom());
@@ -156,7 +170,7 @@ public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
                     } else {
                         TextView violation_row = infoActivity.findViewById(R.id.violation_row);
                         TextView point_row = infoActivity.findViewById(R.id.point_row);
-                        day_row.setText(jsonNode.get(i).get("violationtime").asText());
+                        day_row.setText(jsonNode.get(i).get("violationDate").asText());
                         violation_row.setText(jsonNode.get(i).get("charge").asText());
                         point_row.setText(jsonNode.get(i).get("point").asText() + "点");
 
@@ -170,8 +184,63 @@ public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
                     }
                 }
             }
+            if (jsonNode != null && getUrl.contains("SELECT *")) {
+                for(int i = 0; i < jsonNode.size(); i++) {
+                    String dateTimeString = jsonNode.get(i).get("startDate").asText() + " " + jsonNode.get(i).get("startTime").asText();
+                    int notificationId = jsonNode.get(i).get("notificationId").asInt();
+                    String title = jsonNode.get(i).get("notificationTitle").asText();
+                    String content = jsonNode.get(i).get("notification").asText();
+                    String color = jsonNode.get(i).get("importance").asText();
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                    try {
+                        // 文字列を Date オブジェクトに変換
+                        Date date = sdf.parse(dateTimeString);
+
+                        // Date オブジェクトを Calendar オブジェクトに変換
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date);
+
+                        // Calendar オブジェクトからミリ秒を取得
+                        long timeInMillis = calendar.getTimeInMillis();
+
+                        // アラームを設定する
+                        setAlarm(timeInMillis, notificationId, title, content, color);
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private void setAlarm(long timeInMillis, int notificationId, String title, String content, String color) {
+        System.out.println(notificationId);
+        System.out.println(timeInMillis);
+        AlarmManager alarmManager = (AlarmManager) this.mainActivity.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this.mainActivity, AlarmReceiver.class);
+        intent.putExtra("notificationId", notificationId);
+        intent.putExtra("title", title);
+        intent.putExtra("content", content);
+        intent.putExtra("color", color);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.mainActivity, notificationId, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(timeInMillis, pendingIntent);
+
+        // アラームをセット
+        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+//        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+//        } else {
+//            alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+//        }
+    }
 }
+

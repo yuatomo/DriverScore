@@ -1,19 +1,26 @@
 package com.example.driverscore
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.driverscore.AlarmReceiver.CHANNEL_ID
+
 import io.github.takusan23.jdcardreadercore.JDCardReaderCore
 import io.github.takusan23.jdcardreadercore.JDCardReaderException
 import io.github.takusan23.jdcardreadercore.data.JDCardData
+
 import kotlinx.coroutines.launch
+
 import java.text.SimpleDateFormat
 import java.util.GregorianCalendar
 import java.util.Locale
@@ -23,6 +30,27 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // NotificationChannelの作成
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name: CharSequence = "DriverScore"
+            val description = "アラーム通知用のチャンネル"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance)
+            channel.description = description
+
+            // NotificationManagerにチャンネルを登録
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val builder = Uri.Builder()
+        val parameter = "?sql=SELECT * FROM notice"
+        val task = HttpAsyncLoader(this@MainActivity, parameter)
+        task.execute(builder)
+        val parameter2 = "?sql=DELETE FROM notice WHERE startDate < ( NOW( ) - INTERVAL 1 WEEK )"
+        val task2 = HttpAsyncLoader(this@MainActivity, parameter2)
+        task2.execute(builder)
 
         var password = ""
         val errorText = findViewById<TextView>(R.id.error_text)
@@ -59,6 +87,7 @@ class MainActivity : AppCompatActivity() {
                             val cardData =
                                 JDCardReaderCore.startGetCardData(this@MainActivity, password)
                             val cardNumber = cardData.jdCardDF1EF01Data.cardNumber
+                            println(cardNumber)
                             registerData(cardData)
                             val intent = Intent(this@MainActivity, InfoActivity::class.java)
                             intent.putExtra("cardNumber", cardNumber)
@@ -83,8 +112,16 @@ class MainActivity : AppCompatActivity() {
         val registeredAt = convertJapaneseEraToWesternDate(cardData.jdCardDF1EF01Data.publishDate)
         val endTimeAt = convertJapaneseEraToWesternDate(cardData.jdCardDF1EF01Data.endDate)
         val color = cardData.jdCardDF1EF01Data.cardColor
+        println(name)
+        println(kana)
+        println(location)
+        println(birthday)
+        println(registeredAt)
+        println(endTimeAt)
+        println(color)
         val builder = Uri.Builder()
-        val parameter = "?sql=INSERT IGNORE INTO user VALUES ($cardNumber, '$name', '$kana', '$location', '$birthday', '$registeredAt', '$endTimeAt', '$color')"
+        val parameter = "?sql=INSERT IGNORE INTO user (cardNumber, name, kana, location, birthday, registeredAt, endTimeAt, color) VALUES ($cardNumber, '$name', '$kana', '$location', '$birthday', '$registeredAt', '$endTimeAt', '$color')"
+        println(parameter)
         val task = HttpAsyncLoader(this@MainActivity, parameter)
         task.execute(builder)
     }
