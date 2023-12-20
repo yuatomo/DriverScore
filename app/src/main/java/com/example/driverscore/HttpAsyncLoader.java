@@ -54,6 +54,7 @@ public class HttpAsyncLoader extends AsyncTask<Uri.Builder, Void, String> {
         String text = null;
         try {
             URL url = new URL(getUrl);
+            System.out.println(url);
             //connectionのインスタンス
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             //リクエストのメソッドを指定

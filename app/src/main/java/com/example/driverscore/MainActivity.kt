@@ -45,9 +45,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         val builder = Uri.Builder()
-        val parameter = "?sql=SELECT * FROM notice"
-        val task = HttpAsyncLoader(this@MainActivity, parameter)
-        task.execute(builder)
         val parameter2 = "?sql=DELETE FROM notice WHERE startDate < ( NOW( ) - INTERVAL 1 WEEK )"
         val task2 = HttpAsyncLoader(this@MainActivity, parameter2)
         task2.execute(builder)
@@ -88,6 +85,7 @@ class MainActivity : AppCompatActivity() {
                                 JDCardReaderCore.startGetCardData(this@MainActivity, password)
                             val cardNumber = cardData.jdCardDF1EF01Data.cardNumber
                             println(cardNumber)
+                            insertAndSelectNotice(cardNumber);
                             registerData(cardData)
                             val intent = Intent(this@MainActivity, InfoActivity::class.java)
                             intent.putExtra("cardNumber", cardNumber)
@@ -103,6 +101,23 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    fun insertAndSelectNotice(cardNumber: String) {
+        val builder = Uri.Builder()
+
+        val parameter = "?sql=INSERT INTO notice (cardNumber, notificationTitle, notification, startDate, startTime, importance)" +
+                " SELECT * FROM (SELECT '$cardNumber' AS cardNumber, '免許更新期限のお知らせ' AS notificationTitle, '免許更新期限が残り1ヶ月に迫っています。'" +
+                " AS notification, DATE_SUB(endTimeAt, INTERVAL 1 MONTH) AS startDate , '12:00:00' AS startTime, 'red' AS importance" +
+                " FROM user WHERE cardNumber = '$cardNumber') AS tmp" +
+                " WHERE NOT EXISTS ( SELECT * FROM notice WHERE cardNumber = '$cardNumber'" +
+                " AND notification = '免許更新期限が残り1ヶ月に迫っています。')"
+        val task = HttpAsyncLoader(this@MainActivity, parameter)
+        task.execute(builder)
+
+        val parameter2 = "?sql=SELECT * FROM notice WHERE cardNumber IS NULL OR cardNumber = '$cardNumber'"
+        val task2 = HttpAsyncLoader(this@MainActivity, parameter2)
+        task2.execute(builder)
+    }
+
     fun registerData(cardData :JDCardData) {
         val cardNumber = cardData.jdCardDF1EF01Data.cardNumber
         val name = cardData.jdCardDF1EF01Data.name
@@ -112,13 +127,6 @@ class MainActivity : AppCompatActivity() {
         val registeredAt = convertJapaneseEraToWesternDate(cardData.jdCardDF1EF01Data.publishDate)
         val endTimeAt = convertJapaneseEraToWesternDate(cardData.jdCardDF1EF01Data.endDate)
         val color = cardData.jdCardDF1EF01Data.cardColor
-        println(name)
-        println(kana)
-        println(location)
-        println(birthday)
-        println(registeredAt)
-        println(endTimeAt)
-        println(color)
         val builder = Uri.Builder()
         val parameter = "?sql=INSERT IGNORE INTO user (cardNumber, name, kana, location, birthday, registeredAt, endTimeAt, color) VALUES ($cardNumber, '$name', '$kana', '$location', '$birthday', '$registeredAt', '$endTimeAt', '$color')"
         println(parameter)

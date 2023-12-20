@@ -21,12 +21,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         String title = intent.getStringExtra("title");
         String content = intent.getStringExtra("content");
         int color = 0;
-        if(intent.getStringExtra("color").equals("赤")) {
+        if(intent.getStringExtra("color").equals("red")) {
             color = R.color.red;
-        } else if(intent.getStringExtra("color").equals("黄")) {
+        } else if(intent.getStringExtra("color").equals("yellow")) {
             color = R.color.yellow;
-        } else if(intent.getStringExtra("color").equals("青")) {
-            color = R.color.blue;
+        } else if(intent.getStringExtra("color").equals("green")) {
+            color = R.color.green;
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_IMMUTABLE);

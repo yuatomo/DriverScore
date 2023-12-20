@@ -20,7 +20,7 @@ class InfoActivity : AppCompatActivity() {
     fun viewViolationLog(cardNumber :String) {
         val builder = Uri.Builder()
         val parameter =
-            "?sql=SELECT u.name, SUM(c.point) AS totalPoints FROM user u LEFT JOIN history h ON u.cardNumber = h.cardNumber LEFT JOIN charge c ON h.chargeId = c.chargeId WHERE u.cardNumber = '$cardNumber' GROUP BY u.name"
+            "?sql=SELECT u.name, SUM(c.point) AS totalPoints, totalamount FROM user u LEFT JOIN history h ON u.cardNumber = h.cardNumber LEFT JOIN charge c ON h.chargeId = c.chargeId WHERE u.cardNumber = '$cardNumber' GROUP BY u.name"
         val parameter2 =
             "?sql=SELECT violationDate, charge, point FROM charge c LEFT JOIN history h ON c.chargeId = h.chargeId WHERE h.cardNumber = '$cardNumber' ORDER BY violationDate DESC"
         // Asyncタスククラスのインスタンスを作成し、実行する
