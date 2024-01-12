@@ -87,7 +87,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.38"
             tools:ignore="MissingConstraints"
-            tools:text="0000000" />
+            tools:text="000000000" />
 
         <TextView
             android:id="@+id/point_suffix"
